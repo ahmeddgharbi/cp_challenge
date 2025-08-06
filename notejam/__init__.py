@@ -1,29 +1,32 @@
 from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.login import LoginManager
-from flask.ext.mail import Mail
-from notejam.config import (
-    Config,
-    DevelopmentConfig,
-    ProductionConfig,
-    TestingConfig)
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+from flask_mail import Mail
 import os
 
-from_env = {'production': ProductionConfig,
-            'development': DevelopmentConfig,
-            'testing': TestingConfig,
-            'dbconfig': Config}
+from notejam.config import Config, DevelopmentConfig, ProductionConfig, TestingConfig
 
-# @TODO use application factory approach
+
+config_map = {
+    'production': ProductionConfig,
+    'development': DevelopmentConfig,
+    'testing': TestingConfig,
+    'dbconfig': Config
+}
+
+env = os.getenv('ENVIRONMENT', 'development') 
+config_class = config_map.get(env, DevelopmentConfig)
+
 app = Flask(__name__)
-app.config.from_object(from_env[os.environ.get('ENVIRONMENT', 'testing')])
+app.config.from_object(config_class)
+
 db = SQLAlchemy(app)
 
 
 @app.before_first_request
 def create_tables():
-    db.create_all()
-
+    if app.config['SQLALCHEMY_DATABASE_URI'].startswith('sqlite'):
+        db.create_all()
 
 login_manager = LoginManager()
 login_manager.login_view = "signin"

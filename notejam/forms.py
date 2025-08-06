@@ -1,24 +1,23 @@
-from flask.ext.wtf import (Form, TextField, PasswordField,
-SelectField, TextAreaField)
-from flask.ext.wtf import Required, Email, EqualTo, ValidationError
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SelectField, TextAreaField
+from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 
 from notejam.models import User, Pad
 
 
-class SigninForm(Form):
-    email = TextField('Email', validators=[Required(), Email()])
-    password = PasswordField('Password', validators=[Required()])
+class SigninForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
 
 
-class SignupForm(Form):
-    email = TextField('Email', validators=[Required(), Email()])
-    password = PasswordField('Password', validators=[Required()])
+class SignupForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
     repeat_password = PasswordField(
         'Repeat Password',
         validators=[
-            Required(), EqualTo(
-                'password', message="Your passwords do not match"
-            )
+            DataRequired(),
+            EqualTo('password', message="Your passwords do not match")
         ]
     )
 
@@ -29,12 +28,11 @@ class SignupForm(Form):
             )
 
 
-class NoteForm(Form):
-    name = TextField('Name', validators=[Required()])
-    text = TextAreaField('Note', validators=[Required()])
+class NoteForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    text = TextAreaField('Note', validators=[DataRequired()])
     pad = SelectField('Pad', choices=[], coerce=int)
 
-    # @TODO use wtforms.ext.sqlalchemy.fields.QuerySelectField?
     def __init__(self, user=None, **kwargs):
         super(NoteForm, self).__init__(**kwargs)
         self.pad.choices = [(0, '---------')] + [
@@ -42,24 +40,23 @@ class NoteForm(Form):
         ]
 
 
-class PadForm(Form):
-    name = TextField('Name', validators=[Required()])
+class PadForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
 
 
 # dummy form
-class DeleteForm(Form):
+class DeleteForm(FlaskForm):
     pass
 
 
-class ChangePasswordForm(Form):
-    old_password = PasswordField('Old Password', validators=[Required()])
-    new_password = PasswordField('New Password', validators=[Required()])
+class ChangePasswordForm(FlaskForm):
+    old_password = PasswordField('Old Password', validators=[DataRequired()])
+    new_password = PasswordField('New Password', validators=[DataRequired()])
     repeat_new_password = PasswordField(
         'Repeat New Password',
         validators=[
-            Required(), EqualTo(
-                'new_password', message="Your passwords don't match"
-            )
+            DataRequired(),
+            EqualTo('new_password', message="Your passwords don't match")
         ]
     )
 
@@ -69,16 +66,12 @@ class ChangePasswordForm(Form):
 
     def validate_old_password(self, field):
         if not self.user.check_password(field.data):
-            raise ValidationError(
-                'Incorrect old password'
-            )
+            raise ValidationError('Incorrect old password')
 
 
-class ForgotPasswordForm(Form):
-    email = TextField('Email', validators=[Required(), Email()])
+class ForgotPasswordForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
 
     def validate_email(self, field):
         if not User.query.filter_by(email=field.data).count():
-            raise ValidationError(
-                'No user with given email found'
-            )
+            raise ValidationError('No user with given email found')
