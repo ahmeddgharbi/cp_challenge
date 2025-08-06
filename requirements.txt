@@ -9,3 +9,4 @@ psycopg2-binary==2.9.9
 Flask-Login==0.6.3
 Flask-Mail==0.9.1
 email-validator==2.1.0.post1
+gunicorn==23.0.0
