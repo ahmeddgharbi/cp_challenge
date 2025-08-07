@@ -1,11 +1,11 @@
 {
   "version": 4,
   "terraform_version": "1.5.7",
-  "serial": 126,
+  "serial": 87,
   "lineage": "039f9331-731b-3cd3-d54d-a21fe26b134b",
   "outputs": {
     "ec2_public_ip": {
-      "value": "18.193.111.189",
+      "value": "35.158.19.112",
       "type": "string"
     },
     "rds_endpoint": {
@@ -23,6 +23,7 @@
         {
           "schema_version": 0,
           "attributes": {
+            "allow_unsafe_filter": null,
             "architecture": "x86_64",
             "arn": "arn:aws:ec2:eu-central-1::image/ami-071c1aa7cf7b74f50",
             "block_device_mappings": [
@@ -78,6 +79,7 @@
             "product_codes": [],
             "public": true,
             "ramdisk_id": "",
+            "region": "eu-central-1",
             "root_device_name": "/dev/xvda",
             "root_device_type": "ebs",
             "root_snapshot_id": "snap-0a392ffffe006d106",
@@ -131,11 +133,11 @@
             "deletion_protection": false,
             "domain": "",
             "domain_auth_secret_arn": "",
-            "domain_dns_ips": [],
+            "domain_dns_ips": null,
             "domain_fqdn": "",
             "domain_iam_role_name": "",
             "domain_ou": "",
-            "enabled_cloudwatch_logs_exports": [],
+            "enabled_cloudwatch_logs_exports": null,
             "endpoint": "terraform-20250806132007843400000001.c7bwmkald32n.eu-central-1.rds.amazonaws.com:5432",
             "engine": "postgres",
             "engine_lifecycle_support": "open-source-rds-extended-support",
@@ -173,6 +175,7 @@
             "performance_insights_retention_period": 0,
             "port": 5432,
             "publicly_accessible": false,
+            "region": "eu-central-1",
             "replica_mode": "",
             "replicas": [],
             "replicate_source_db": "",
@@ -185,7 +188,7 @@
             "storage_encrypted": false,
             "storage_throughput": 0,
             "storage_type": "gp2",
-            "tags": {},
+            "tags": null,
             "tags_all": {},
             "timeouts": null,
             "timezone": "",
@@ -206,11 +209,7 @@
           "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAwLCJkZWxldGUiOjM2MDAwMDAwMDAwMDAsInVwZGF0ZSI6NDgwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMiJ9",
           "dependencies": [
             "aws_db_subnet_group.db_subnets",
-            "aws_security_group.ec2_sg",
-            "aws_security_group.rds_sg",
-            "aws_subnet.public_a",
-            "aws_subnet.public_b",
-            "aws_vpc.main"
+            "aws_security_group.rds_sg"
           ]
         }
       ]
@@ -229,6 +228,7 @@
             "id": "db-subnet-group",
             "name": "db-subnet-group",
             "name_prefix": "",
+            "region": "eu-central-1",
             "subnet_ids": [
               "subnet-013b6aa1d39407056",
               "subnet-0b2af431d3c1c480b"
@@ -257,10 +257,10 @@
       "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
       "instances": [
         {
-          "schema_version": 1,
+          "schema_version": 2,
           "attributes": {
             "ami": "ami-071c1aa7cf7b74f50",
-            "arn": "arn:aws:ec2:eu-central-1:198464718186:instance/i-00e53bc9d51f9f42c",
+            "arn": "arn:aws:ec2:eu-central-1:198464718186:instance/i-0391400d1d694e1d6",
             "associate_public_ip_address": true,
             "availability_zone": "eu-central-1a",
             "capacity_reservation_specification": [
@@ -269,7 +269,6 @@
                 "capacity_reservation_target": []
               }
             ],
-            "cpu_core_count": 1,
             "cpu_options": [
               {
                 "amd_sev_snp": "",
@@ -277,7 +276,6 @@
                 "threads_per_core": 1
               }
             ],
-            "cpu_threads_per_core": 1,
             "credit_specification": [
               {
                 "cpu_credits": "standard"
@@ -299,7 +297,7 @@
             "host_id": "",
             "host_resource_group_arn": null,
             "iam_instance_profile": "",
-            "id": "i-00e53bc9d51f9f42c",
+            "id": "i-0391400d1d694e1d6",
             "instance_initiated_shutdown_behavior": "stop",
             "instance_lifecycle": "",
             "instance_market_options": [],
@@ -307,7 +305,7 @@
             "instance_type": "t2.micro",
             "ipv6_address_count": 0,
             "ipv6_addresses": [],
-            "key_name": "my-new-key",
+            "key_name": "",
             "launch_template": [],
             "maintenance_options": [
               {
@@ -329,8 +327,8 @@
             "password_data": "",
             "placement_group": "",
             "placement_partition_number": 0,
-            "primary_network_interface_id": "eni-094908d740290798e",
-            "private_dns": "ip-10-1-11-197.eu-central-1.compute.internal",
+            "primary_network_interface_id": "eni-02894cc9d8810eb1b",
+            "private_dns": "ip-10-1-11-10.eu-central-1.compute.internal",
             "private_dns_name_options": [
               {
                 "enable_resource_name_dns_a_record": false,
@@ -338,9 +336,10 @@
                 "hostname_type": "ip-name"
               }
             ],
-            "private_ip": "10.1.11.197",
+            "private_ip": "10.1.11.10",
             "public_dns": "",
-            "public_ip": "18.193.111.189",
+            "public_ip": "35.158.19.112",
+            "region": "eu-central-1",
             "root_block_device": [
               {
                 "delete_on_termination": true,
@@ -351,30 +350,32 @@
                 "tags": {},
                 "tags_all": {},
                 "throughput": 0,
-                "volume_id": "vol-00a20e84cea0dfec5",
+                "volume_id": "vol-046d39982512dcd45",
                 "volume_size": 8,
                 "volume_type": "gp2"
               }
             ],
             "secondary_private_ips": [],
-            "security_groups": [],
+            "security_groups": [
+              "sg-0c966972ec814ddec"
+            ],
             "source_dest_check": true,
             "spot_instance_request_id": "",
             "subnet_id": "subnet-013b6aa1d39407056",
             "tags": {
-              "Name": "app-server"
+              "Name": "notejam-app"
             },
             "tags_all": {
-              "Name": "app-server"
+              "Name": "notejam-app"
             },
             "tenancy": "default",
             "timeouts": null,
-            "user_data": "2aff53aacd26dd588ffa133bfa0a60bf4d378ea6",
+            "user_data": "#!/bin/bash\n# Update and install dependencies\nyum update -y\namazon-linux-extras enable python3.8\nyum install -y python38 git\npip3 install --upgrade pip\n\n# Install Flask and Gunicorn\npip3 install Flask==2.3.2 gunicorn psycopg2-binary\n\n# Export environment variable for DB\necho \"export DATABASE_URL=postgresql://notejamadmin:YourSecurePassword123@terraform-20250806132007843400000001.c7bwmkald32n.eu-central-1.rds.amazonaws.com:5432/notejam\" \u003e\u003e /etc/profile\nsource /etc/profile\n\n# Clone the app and run\ncd /home/ec2-user\ngit clone https://github.com/ahmeddgharbi/cp_challenge.git\ncd cp_challenge\n\n# Start Gunicorn\ngunicorn -w 4 -b 0.0.0.0:80 runserver:app --daemon\n",
             "user_data_base64": null,
             "user_data_replace_on_change": false,
             "volume_tags": null,
             "vpc_security_group_ids": [
-              "sg-092ccd440ed71cfc7"
+              "sg-0c966972ec814ddec"
             ]
           },
           "sensitive_attributes": [
@@ -385,10 +386,12 @@
               }
             ]
           ],
-          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMCwicmVhZCI6OTAwMDAwMDAwMDAwLCJ1cGRhdGUiOjYwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMCwicmVhZCI6OTAwMDAwMDAwMDAwLCJ1cGRhdGUiOjYwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMiJ9",
           "dependencies": [
             "aws_db_instance.db",
+            "aws_db_subnet_group.db_subnets",
             "aws_security_group.ec2_sg",
+            "aws_security_group.rds_sg",
             "aws_subnet.public_a",
             "data.aws_ami.amazon_linux_2"
           ]
@@ -407,6 +410,7 @@
             "arn": "arn:aws:ec2:eu-central-1:198464718186:internet-gateway/igw-09b39f57cd5bdb76b",
             "id": "igw-09b39f57cd5bdb76b",
             "owner_id": "198464718186",
+            "region": "eu-central-1",
             "tags": {},
             "tags_all": {},
             "timeouts": null,
@@ -436,14 +440,15 @@
             "destination_prefix_list_id": "",
             "egress_only_gateway_id": "",
             "gateway_id": "igw-09b39f57cd5bdb76b",
-            "id": "r-rtb-0e662a102c08af4bd1080289494",
+            "id": "r-rtb-0e63eb30d17ad3a721080289494",
             "instance_id": "",
             "instance_owner_id": "",
             "local_gateway_id": "",
             "nat_gateway_id": "",
             "network_interface_id": "",
             "origin": "CreateRoute",
-            "route_table_id": "rtb-0e662a102c08af4bd",
+            "region": "eu-central-1",
+            "route_table_id": "rtb-0e63eb30d17ad3a72",
             "state": "active",
             "timeouts": null,
             "transit_gateway_id": "",
@@ -469,10 +474,11 @@
         {
           "schema_version": 0,
           "attributes": {
-            "arn": "arn:aws:ec2:eu-central-1:198464718186:route-table/rtb-0e662a102c08af4bd",
-            "id": "rtb-0e662a102c08af4bd",
+            "arn": "arn:aws:ec2:eu-central-1:198464718186:route-table/rtb-0e63eb30d17ad3a72",
+            "id": "rtb-0e63eb30d17ad3a72",
             "owner_id": "198464718186",
             "propagating_vgws": [],
+            "region": "eu-central-1",
             "route": [
               {
                 "carrier_gateway_id": "",
@@ -513,8 +519,9 @@
           "schema_version": 0,
           "attributes": {
             "gateway_id": "",
-            "id": "rtbassoc-05358f7429da3a82e",
-            "route_table_id": "rtb-0e662a102c08af4bd",
+            "id": "rtbassoc-003316846a37d0b98",
+            "region": "eu-central-1",
+            "route_table_id": "rtb-0e63eb30d17ad3a72",
             "subnet_id": "subnet-013b6aa1d39407056",
             "timeouts": null
           },
@@ -538,8 +545,9 @@
           "schema_version": 0,
           "attributes": {
             "gateway_id": "",
-            "id": "rtbassoc-0542cea99b85cdbb0",
-            "route_table_id": "rtb-0e662a102c08af4bd",
+            "id": "rtbassoc-0d889d717d3edea01",
+            "region": "eu-central-1",
+            "route_table_id": "rtb-0e63eb30d17ad3a72",
             "subnet_id": "subnet-0b2af431d3c1c480b",
             "timeouts": null
           },
@@ -562,8 +570,8 @@
         {
           "schema_version": 1,
           "attributes": {
-            "arn": "arn:aws:ec2:eu-central-1:198464718186:security-group/sg-092ccd440ed71cfc7",
-            "description": "Allow HTTP and SSH traffic",
+            "arn": "arn:aws:ec2:eu-central-1:198464718186:security-group/sg-0c966972ec814ddec",
+            "description": "Allow HTTP traffic",
             "egress": [
               {
                 "cidr_blocks": [
@@ -579,21 +587,8 @@
                 "to_port": 0
               }
             ],
-            "id": "sg-092ccd440ed71cfc7",
+            "id": "sg-0c966972ec814ddec",
             "ingress": [
-              {
-                "cidr_blocks": [
-                  "0.0.0.0/0"
-                ],
-                "description": "",
-                "from_port": 22,
-                "ipv6_cidr_blocks": [],
-                "prefix_list_ids": [],
-                "protocol": "tcp",
-                "security_groups": [],
-                "self": false,
-                "to_port": 22
-              },
               {
                 "cidr_blocks": [
                   "0.0.0.0/0"
@@ -611,6 +606,7 @@
             "name": "ec2-sg",
             "name_prefix": "",
             "owner_id": "198464718186",
+            "region": "eu-central-1",
             "revoke_rules_on_delete": false,
             "tags": {},
             "tags_all": {},
@@ -661,7 +657,7 @@
                 "prefix_list_ids": [],
                 "protocol": "tcp",
                 "security_groups": [
-                  "sg-092ccd440ed71cfc7"
+                  "sg-0c966972ec814ddec"
                 ],
                 "self": false,
                 "to_port": 5432
@@ -670,6 +666,7 @@
             "name": "rds-sg",
             "name_prefix": "",
             "owner_id": "198464718186",
+            "region": "eu-central-1",
             "revoke_rules_on_delete": false,
             "tags": {},
             "tags_all": {},
@@ -713,6 +710,7 @@
             "outpost_arn": "",
             "owner_id": "198464718186",
             "private_dns_hostname_type_on_launch": "ip-name",
+            "region": "eu-central-1",
             "tags": {
               "Name": "public-subnet-a"
             },
@@ -758,6 +756,7 @@
             "outpost_arn": "",
             "owner_id": "198464718186",
             "private_dns_hostname_type_on_launch": "ip-name",
+            "region": "eu-central-1",
             "tags": {
               "Name": "public-subnet-b"
             },
@@ -805,6 +804,7 @@
             "ipv6_netmask_length": 0,
             "main_route_table_id": "rtb-0cf980b6594f2194f",
             "owner_id": "198464718186",
+            "region": "eu-central-1",
             "tags": {
               "Name": "notejam-vpc"
             },

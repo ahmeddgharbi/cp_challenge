@@ -211,7 +211,7 @@ def forgot_password():
 @app.context_processor
 def inject_user_pads():
     ''' inject list of user pads in template context '''
-    if not current_user.is_anonymous():
+    if not current_user.is_anonymous:
         return dict(pads=current_user.pads.all())
     return dict(pads=[])
 

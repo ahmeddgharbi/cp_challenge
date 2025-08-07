@@ -7,3 +7,7 @@ terraform/.terraform/
 terraform/terraform.tfstate
 terraform/terraform.tfstate.backup
 terraform/terraform.tfvars
+terraform/my-terraform-key
+terraform/terraform.tfstate.1754487988
+terraform/terraform.tfstate.1754491568
+terraform/.terraform.lock

@@ -1,3 +1,14 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+
+  required_version = ">= 1.3.0"
+}
+
 provider "aws" {
   region = var.aws_region
 }
@@ -80,12 +91,19 @@ resource "aws_route_table_association" "public_assoc_b" {
 # ---------------------
 resource "aws_security_group" "ec2_sg" {
   name        = "ec2-sg"
-  description = "Allow HTTP traffic"
+  description = "Allow HTTP and SSH traffic"
   vpc_id      = aws_vpc.main.id
 
   ingress {
     from_port   = 80
     to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -122,41 +140,38 @@ resource "aws_security_group" "rds_sg" {
 # EC2 Instance with User Data
 # ---------------------
 resource "aws_instance" "app" {
-  ami           = data.aws_ami.amazon_linux_2.id
-  instance_type = var.ec2_instance_type
-  subnet_id     = aws_subnet.public_a.id
-  security_groups = [aws_security_group.ec2_sg.id]
+  ami                    = data.aws_ami.amazon_linux_2.id
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.public_a.id
+  vpc_security_group_ids = [aws_security_group.ec2_sg.id]
+  key_name               = var.key_name
 
   user_data = <<-EOF
-    #!/bin/bash
-    yum update -y
-    amazon-linux-extras enable python3.8
-    yum install -y python3.8 git
+#!/bin/bash
+# Update system and install dependencies
+yum update -y
+amazon-linux-extras enable python3.8
+yum install -y python3.8 git
+pip3 install --upgrade pip
 
-    # Install pip and virtualenv
-    python3.8 -m ensurepip
-    python3.8 -m pip install --upgrade pip
-    pip3 install virtualenv gunicorn
+# Clone the app repo
+cd /home/ec2-user
+git clone https://github.com/ahmeddgharbi/cp_challenge.git
+cd cp_challenge
 
-    # Clone your repo
-    cd /home/ec2-user
-    git clone https://github.com/${var.github_username}/${var.github_repo}.git
-    cd ${var.github_repo}
+# Install app requirements
+pip3 install -r requirements.txt
 
-    # Set up virtual environment
-    python3.8 -m venv venv
-    source venv/bin/activate
-    pip install -r requirements.txt
+# Export DB connection string
+export DATABASE_URL=postgresql://${var.db_username}:${var.db_password}@${aws_db_instance.db.address}:5432/${var.db_name}
 
-    # Set environment variables
-    export DATABASE_URL=postgresql://${var.db_username}:${var.db_password}@${aws_db_instance.db.endpoint}:5432/postgres
+# Start the app with Gunicorn on port 80
+nohup gunicorn --bind 0.0.0.0:80 runserver:app &
+EOF
 
-    # Run app with Gunicorn
-    nohup gunicorn -w 3 -b 0.0.0.0:80 runserver:app &
-  EOF
 
   tags = {
-    Name = "notejam-app"
+    Name = "app-server"
   }
 }
 
@@ -176,6 +191,7 @@ resource "aws_db_instance" "db" {
   engine                 = "postgres"
   engine_version         = "14"
   instance_class         = var.db_instance_class
+  db_name                = var.db_name
   username               = var.db_username
   password               = var.db_password
   parameter_group_name   = "default.postgres14"

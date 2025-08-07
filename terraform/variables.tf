@@ -38,3 +38,13 @@ variable "db_storage" {
   description = "Allocated storage for RDS"
   default     = 20
 }
+
+variable "db_name" {
+  description = "The name of the database to create"
+  type        = string
+}
+
+variable "key_name" {
+  description = "The name of the EC2 key pair"
+  type        = string
+}

@@ -1,11 +1,11 @@
 {
   "version": 4,
   "terraform_version": "1.5.7",
-  "serial": 126,
+  "serial": 92,
   "lineage": "039f9331-731b-3cd3-d54d-a21fe26b134b",
   "outputs": {
     "ec2_public_ip": {
-      "value": "18.193.111.189",
+      "value": "35.158.19.112",
       "type": "string"
     },
     "rds_endpoint": {
@@ -255,145 +255,7 @@
       "type": "aws_instance",
       "name": "app",
       "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
-      "instances": [
-        {
-          "schema_version": 1,
-          "attributes": {
-            "ami": "ami-071c1aa7cf7b74f50",
-            "arn": "arn:aws:ec2:eu-central-1:198464718186:instance/i-00e53bc9d51f9f42c",
-            "associate_public_ip_address": true,
-            "availability_zone": "eu-central-1a",
-            "capacity_reservation_specification": [
-              {
-                "capacity_reservation_preference": "open",
-                "capacity_reservation_target": []
-              }
-            ],
-            "cpu_core_count": 1,
-            "cpu_options": [
-              {
-                "amd_sev_snp": "",
-                "core_count": 1,
-                "threads_per_core": 1
-              }
-            ],
-            "cpu_threads_per_core": 1,
-            "credit_specification": [
-              {
-                "cpu_credits": "standard"
-              }
-            ],
-            "disable_api_stop": false,
-            "disable_api_termination": false,
-            "ebs_block_device": [],
-            "ebs_optimized": false,
-            "enable_primary_ipv6": null,
-            "enclave_options": [
-              {
-                "enabled": false
-              }
-            ],
-            "ephemeral_block_device": [],
-            "get_password_data": false,
-            "hibernation": false,
-            "host_id": "",
-            "host_resource_group_arn": null,
-            "iam_instance_profile": "",
-            "id": "i-00e53bc9d51f9f42c",
-            "instance_initiated_shutdown_behavior": "stop",
-            "instance_lifecycle": "",
-            "instance_market_options": [],
-            "instance_state": "running",
-            "instance_type": "t2.micro",
-            "ipv6_address_count": 0,
-            "ipv6_addresses": [],
-            "key_name": "my-new-key",
-            "launch_template": [],
-            "maintenance_options": [
-              {
-                "auto_recovery": "default"
-              }
-            ],
-            "metadata_options": [
-              {
-                "http_endpoint": "enabled",
-                "http_protocol_ipv6": "disabled",
-                "http_put_response_hop_limit": 1,
-                "http_tokens": "optional",
-                "instance_metadata_tags": "disabled"
-              }
-            ],
-            "monitoring": false,
-            "network_interface": [],
-            "outpost_arn": "",
-            "password_data": "",
-            "placement_group": "",
-            "placement_partition_number": 0,
-            "primary_network_interface_id": "eni-094908d740290798e",
-            "private_dns": "ip-10-1-11-197.eu-central-1.compute.internal",
-            "private_dns_name_options": [
-              {
-                "enable_resource_name_dns_a_record": false,
-                "enable_resource_name_dns_aaaa_record": false,
-                "hostname_type": "ip-name"
-              }
-            ],
-            "private_ip": "10.1.11.197",
-            "public_dns": "",
-            "public_ip": "18.193.111.189",
-            "root_block_device": [
-              {
-                "delete_on_termination": true,
-                "device_name": "/dev/xvda",
-                "encrypted": false,
-                "iops": 100,
-                "kms_key_id": "",
-                "tags": {},
-                "tags_all": {},
-                "throughput": 0,
-                "volume_id": "vol-00a20e84cea0dfec5",
-                "volume_size": 8,
-                "volume_type": "gp2"
-              }
-            ],
-            "secondary_private_ips": [],
-            "security_groups": [],
-            "source_dest_check": true,
-            "spot_instance_request_id": "",
-            "subnet_id": "subnet-013b6aa1d39407056",
-            "tags": {
-              "Name": "app-server"
-            },
-            "tags_all": {
-              "Name": "app-server"
-            },
-            "tenancy": "default",
-            "timeouts": null,
-            "user_data": "2aff53aacd26dd588ffa133bfa0a60bf4d378ea6",
-            "user_data_base64": null,
-            "user_data_replace_on_change": false,
-            "volume_tags": null,
-            "vpc_security_group_ids": [
-              "sg-092ccd440ed71cfc7"
-            ]
-          },
-          "sensitive_attributes": [
-            [
-              {
-                "type": "get_attr",
-                "value": "user_data"
-              }
-            ]
-          ],
-          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMCwicmVhZCI6OTAwMDAwMDAwMDAwLCJ1cGRhdGUiOjYwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
-          "dependencies": [
-            "aws_db_instance.db",
-            "aws_security_group.ec2_sg",
-            "aws_subnet.public_a",
-            "data.aws_ami.amazon_linux_2"
-          ]
-        }
-      ]
+      "instances": []
     },
     {
       "mode": "managed",
@@ -436,14 +298,14 @@
             "destination_prefix_list_id": "",
             "egress_only_gateway_id": "",
             "gateway_id": "igw-09b39f57cd5bdb76b",
-            "id": "r-rtb-0e662a102c08af4bd1080289494",
+            "id": "r-rtb-0e63eb30d17ad3a721080289494",
             "instance_id": "",
             "instance_owner_id": "",
             "local_gateway_id": "",
             "nat_gateway_id": "",
             "network_interface_id": "",
             "origin": "CreateRoute",
-            "route_table_id": "rtb-0e662a102c08af4bd",
+            "route_table_id": "rtb-0e63eb30d17ad3a72",
             "state": "active",
             "timeouts": null,
             "transit_gateway_id": "",
@@ -469,8 +331,8 @@
         {
           "schema_version": 0,
           "attributes": {
-            "arn": "arn:aws:ec2:eu-central-1:198464718186:route-table/rtb-0e662a102c08af4bd",
-            "id": "rtb-0e662a102c08af4bd",
+            "arn": "arn:aws:ec2:eu-central-1:198464718186:route-table/rtb-0e63eb30d17ad3a72",
+            "id": "rtb-0e63eb30d17ad3a72",
             "owner_id": "198464718186",
             "propagating_vgws": [],
             "route": [
@@ -513,8 +375,8 @@
           "schema_version": 0,
           "attributes": {
             "gateway_id": "",
-            "id": "rtbassoc-05358f7429da3a82e",
-            "route_table_id": "rtb-0e662a102c08af4bd",
+            "id": "rtbassoc-003316846a37d0b98",
+            "route_table_id": "rtb-0e63eb30d17ad3a72",
             "subnet_id": "subnet-013b6aa1d39407056",
             "timeouts": null
           },
@@ -538,8 +400,8 @@
           "schema_version": 0,
           "attributes": {
             "gateway_id": "",
-            "id": "rtbassoc-0542cea99b85cdbb0",
-            "route_table_id": "rtb-0e662a102c08af4bd",
+            "id": "rtbassoc-0d889d717d3edea01",
+            "route_table_id": "rtb-0e63eb30d17ad3a72",
             "subnet_id": "subnet-0b2af431d3c1c480b",
             "timeouts": null
           },
@@ -562,8 +424,8 @@
         {
           "schema_version": 1,
           "attributes": {
-            "arn": "arn:aws:ec2:eu-central-1:198464718186:security-group/sg-092ccd440ed71cfc7",
-            "description": "Allow HTTP and SSH traffic",
+            "arn": "arn:aws:ec2:eu-central-1:198464718186:security-group/sg-0c966972ec814ddec",
+            "description": "Allow HTTP traffic",
             "egress": [
               {
                 "cidr_blocks": [
@@ -579,21 +441,8 @@
                 "to_port": 0
               }
             ],
-            "id": "sg-092ccd440ed71cfc7",
+            "id": "sg-0c966972ec814ddec",
             "ingress": [
-              {
-                "cidr_blocks": [
-                  "0.0.0.0/0"
-                ],
-                "description": "",
-                "from_port": 22,
-                "ipv6_cidr_blocks": [],
-                "prefix_list_ids": [],
-                "protocol": "tcp",
-                "security_groups": [],
-                "self": false,
-                "to_port": 22
-              },
               {
                 "cidr_blocks": [
                   "0.0.0.0/0"
@@ -661,7 +510,7 @@
                 "prefix_list_ids": [],
                 "protocol": "tcp",
                 "security_groups": [
-                  "sg-092ccd440ed71cfc7"
+                  "sg-0c966972ec814ddec"
                 ],
                 "self": false,
                 "to_port": 5432
