@@ -48,3 +48,9 @@ variable "key_name" {
   description = "The name of the EC2 key pair"
   type        = string
 }
+
+variable "app_repo_url" {
+  description = "GitHub repository URL for the app"
+  type        = string
+  default     = "https://github.com/ahmeddgharbi/cp_challenge.git"
+}

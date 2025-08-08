@@ -13,9 +13,7 @@ provider "aws" {
   region = var.aws_region
 }
 
-# ---------------------
 # Fetch Latest Amazon Linux 2 AMI
-# ---------------------
 data "aws_ami" "amazon_linux_2" {
   most_recent = true
   owners      = ["amazon"]
@@ -26,9 +24,7 @@ data "aws_ami" "amazon_linux_2" {
   }
 }
 
-# ---------------------
 # VPC
-# ---------------------
 resource "aws_vpc" "main" {
   cidr_block = "10.1.0.0/16"
   tags = {
@@ -36,9 +32,7 @@ resource "aws_vpc" "main" {
   }
 }
 
-# ---------------------
 # Subnets (Different AZs, New CIDRs)
-# ---------------------
 resource "aws_subnet" "public_a" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.1.11.0/24"
@@ -59,9 +53,7 @@ resource "aws_subnet" "public_b" {
   }
 }
 
-# ---------------------
 # Internet Gateway & Routing
-# ---------------------
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main.id
 }
@@ -86,9 +78,7 @@ resource "aws_route_table_association" "public_assoc_b" {
   route_table_id = aws_route_table.public.id
 }
 
-# ---------------------
 # Security Groups
-# ---------------------
 resource "aws_security_group" "ec2_sg" {
   name        = "ec2-sg"
   description = "Allow HTTP and SSH traffic"
@@ -136,17 +126,62 @@ resource "aws_security_group" "rds_sg" {
   }
 }
 
-# ---------------------
-# EC2 Instance with User Data
-# ---------------------
+# IAM Role and Instance Profile for EC2 to access Parameter Store
+resource "aws_iam_role" "ec2_role" {
+  name = "ec2-parameter-store-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+    }]
+  })
+}
+
+resource "aws_iam_role_policy" "ssm_policy" {
+  name = "ssm-access-policy"
+  role = aws_iam_role.ec2_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParameter",
+          "ssm:GetParameters"
+        ]
+        Resource = [
+          "arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter/notejam/db_username",
+          "arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter/notejam/db_password",
+          "arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter/notejam/db_name"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_instance_profile" "ec2_instance_profile" {
+  name = "ec2-parameter-store-instance-profile"
+  role = aws_iam_role.ec2_role.name
+}
+
+data "aws_caller_identity" "current" {}
+
+# EC2 Instance
 resource "aws_instance" "app" {
   ami                    = data.aws_ami.amazon_linux_2.id
   instance_type          = "t2.micro"
   subnet_id              = aws_subnet.public_a.id
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
   key_name               = var.key_name
+  iam_instance_profile   = aws_iam_instance_profile.ec2_instance_profile.name
 
-  user_data = <<-EOF
+user_data = <<-EOF
 #!/bin/bash
 # Update system and install dependencies
 yum update -y
@@ -169,23 +204,18 @@ export DATABASE_URL=postgresql://${var.db_username}:${var.db_password}@${aws_db_
 nohup gunicorn --bind 0.0.0.0:80 runserver:app &
 EOF
 
-
   tags = {
     Name = "app-server"
   }
 }
 
-# ---------------------
 # RDS Subnet Group
-# ---------------------
 resource "aws_db_subnet_group" "db_subnets" {
   name       = "db-subnet-group"
   subnet_ids = [aws_subnet.public_a.id, aws_subnet.public_b.id]
 }
 
-# ---------------------
 # RDS PostgreSQL
-# ---------------------
 resource "aws_db_instance" "db" {
   allocated_storage      = var.db_storage
   engine                 = "postgres"
